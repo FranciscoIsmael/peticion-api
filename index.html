@@ -1,24 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Gatos</title>
-    <script src="js/jquery-3.4.1.min.js"></script>
+    <title>Api gatos</title>
+    <style>
+        body{
+            background-image: url("fondo.jpeg");
+            background-repeat: repeat;
+        }
+
+        .card{
+            background-color: rgb(247, 213, 161)!important;
+        }
+
+        h1, h5, h2{
+            text-align: center;
+        }
+
+        h1{
+            font-size: xx-large
+        }
+
+        h5{
+            font-size: xx-large
+        }
+
+        p{
+            font-size: x-large
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Birthstone&display=swap');
+
+        *{
+            font-family: 'Birthstone', cursive;
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="jquery.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
-
     <script>
         $(function() {
 
             //Trae los albums de la dirección indicada, cuando son devueltos por dada uno de ellos añade un option dentro del select con el id albums, cada option tiene una propiedad value con el valor del id del json recibido. Después, dentro de la etiqueta pone el titulo del album.
-
-            $.ajax("https://jsonplaceholder.typicode.com/albums", {
+            var url = "https://api.thecatapi.com/v1/breeds";
+            url += '?' + $.param({
+  'api-key': "28d3143c-1c90-4bc6-8430-5e8eadc931fe"
+});
+            $.ajax({
+                url: url,
+                method: 'GET',
                 dataType: 'json',
                 success: function (data) {
+                    $("#load").hide();
+                    var count = 2;
                     data.forEach(function (valor) {
-                        $("body").append("<figure id=\"raza\"> <img id='imagen' src=\""+valor.image.url+"\" alt=\"cat\"> <figcaption id=\"nombreraza\">"+valor.name+"</figcaption> <p id=\"descripcion\">"+valor.description+"</p><a id=\"wikipedia\" href=\""+valor.wikipedia_url+"\">Ver más</a></figure>");
+                        if(count % 2 == 0) {
+                            $(".container").append("<div class=\"row\" style=\"margin-bottom: 30px;\"></div>")
+                        }
+                        $(".row:last-child").append("<div class=\"col-6\"><div class=\"card\" style=\"height: 70rem;\"><img class=\"card-img-top\" src=\""+valor.image.url+"\" alt=\"Card image cap\"><div class=\"card-body\"><h2 class=\"card-title\">"+valor.name+"</h2><p class=\"card-text\">"+valor.description+"</p><a href=\""+valor.wikipedia_url+"\" class=\"btn btn-dark\">Ver en Wikipedia</a></div></div></div>");
+                        count++;
                     });
                 }
             });
@@ -26,5 +72,11 @@
             
         });
     </script>
+    <div id="titulo">
+        <h1>Gatos</h1>
+    </div>
+    <div class="container">
+        <h2 id="load">Cargando</h2>
+    </div>
 </body>
 </html>
